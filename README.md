@@ -29,8 +29,8 @@ A lightweight, **fully local** Retrieval-Augmented Generation (RAG) system that 
 ### 2. Clone & Install
 
 ```bash
-git clone https://github.com/your-username/local-rag-ollama.git
-cd local-rag-ollama
+git clone https://github.com/winx-T/Local-RAG-System.git
+cd Local-RAG-System
 pip install -r requirements.txt
 ```
 
