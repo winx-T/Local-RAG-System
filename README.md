@@ -6,6 +6,17 @@ Built for **everyone**:
 - 🧩 Beginners who just want a simple, working personal AI.
 - 🧠 Power users who want reranking, hybrid search, and multilingual embeddings.
 
+##  What’s New in this version
+| Feature                        | Description                                                               |
+| ------------------------------ | ------------------------------------------------------------------------- |
+| 💡 **General Knowledge Mode**  | Ask questions without documents (“from your knowledge”).                  |
+| 💬 **Smarter Chat System**     | Handles casual talk, document Q&A, or general queries automatically.      |
+| 🧠 **Intent Detection**        | Detects whether to use documents or general knowledge via regex patterns. |
+| 🧰 **Improved Cache Handling** | Displays “from memory” responses for cached answers.                      |
+| 🛡️ **Error Resilience**       | Handles runtime issues gracefully without crashes.                        |
+| ✨ **Enhanced UX**              | Clearer chat messages, emojis, and helpful prompts.                       |
+
+
 ---
 
 ## 🔍 What is RAG?
