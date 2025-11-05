@@ -1,13 +1,3 @@
-"""
-📚 LOCAL RAG SYSTEM - EASY FOR EVERYONE
-- Zero configuration needed - works out of the box
-- Automatic setup wizard on first run
-- Plain English interface - no technical jargon
-- Smart defaults for common use cases
-- Built-in help and guidance
-- Works with your documents automatically
-"""
-
 import os
 import re
 import json
@@ -68,12 +58,12 @@ class Config:
         
         # Smart defaults
         self.ollama_url = "http://localhost:11434"
-        self.model_name = "llama3.2:3b"  # Change this to your preferred model
+        self.model_name = "llama3.2:3b"
         
         # Auto-detected on first run
         self.embedding_model = None
         self.use_reranking = True
-        self.language = "auto"  # auto, english, french, spanish, etc.
+        self.language = "auto"
         
         # User preferences
         self.show_sources = True
@@ -403,8 +393,14 @@ class EasyRAG:
         
         return chunks
     
-    def ask(self, question: str) -> str:
+    def ask(self, question: str, use_documents: bool = True) -> str:
         """Ask a question and get an answer."""
+        
+        # If user doesn't want to use documents (general knowledge questions)
+        if not use_documents:
+            print("   💭 Using general knowledge...")
+            prompt = f"Answer this question concisely and accurately:\n\n{question}"
+            return self._generate(prompt)
         
         # Check cache first
         question_key = question.lower().strip()
@@ -412,9 +408,17 @@ class EasyRAG:
             cached = self.cache[question_key]
             age = datetime.now() - datetime.fromisoformat(cached['time'])
             if age < timedelta(hours=24):
+                print("\n" + "="*80)
+                print("📝 ANSWER (from memory):\n")
+                print(cached['answer'])
+                print("="*80)
                 if config.show_sources:
-                    print(f"\n💡 From: {', '.join(cached['sources'])}")
+                    print(f"\n💡 Sources: {', '.join(cached['sources'])}")
                 return cached['answer']
+        
+        # Check if knowledge base is empty
+        if self.collection.count() == 0:
+            return "I don't have any documents to search yet. Please add some documents first, or ask me to use my general knowledge by saying 'from your knowledge' or 'without documents'."
         
         # Search for relevant information
         print("   🔍 Searching your documents...")
@@ -553,10 +557,37 @@ Answer (be specific and helpful):"""
         print(f"✅ Removed {filename}")
     
     def chat(self):
-        """Interactive chat mode."""
+        """Interactive chat mode with smart routing."""
         print("\n💬 CHAT MODE")
-        print("Type your questions and I'll answer based on your documents.")
-        print("Commands: 'exit' to quit, 'docs' to see documents, 'clear' to reset chat\n")
+        print("="*80)
+        print("Ask me anything! I'll search your documents or use general knowledge.")
+        print("\n💡 Tips:")
+        print("   • Regular questions: I'll search your documents")
+        print("   • Say 'from your knowledge' or 'without documents': I'll use general AI knowledge")
+        print("   • Just chat naturally - say hi, thanks, etc!")
+        print("\n📋 Commands:")
+        print("   • 'exit' or 'quit' - Leave chat mode")
+        print("   • 'docs' - See your documents")
+        print("   • 'clear' - Reset conversation")
+        print("="*80 + "\n")
+        
+        # Casual conversation patterns
+        casual_patterns = [
+            r'^(hi|hello|hey|bonjour|salut)',
+            r'^(thanks|thank you|merci)',
+            r'^(bye|goodbye|au revoir)',
+            r'^(ok|okay|good|nice|great|cool|awesome)',
+            r'(nice work|well done|good job)',
+            r'^(yes|no|oui|non)'
+        ]
+        
+        # General knowledge indicators
+        general_knowledge_patterns = [
+            r'(from your|use your|with your).*(knowledge|brain|memory)',
+            r'(without|don\'t use|ignore).*(document|file|pdf)',
+            r'(general|common|basic).*(knowledge|information)',
+            r'answer.*your.*knowledge',
+        ]
         
         while True:
             try:
@@ -565,21 +596,76 @@ Answer (be specific and helpful):"""
                 if not question:
                     continue
                 
-                if question.lower() == 'exit':
-                    print("\n👋 Goodbye!")
+                # Check for exit commands
+                if question.lower() in ['exit', 'quit', 'bye', 'goodbye']:
+                    print("\n👋 Leaving chat mode...")
                     break
                 
+                # Check for special commands
                 if question.lower() == 'docs':
                     self.list_documents()
                     continue
                 
-                if question.lower() == 'clear':
+                if question.lower() in ['clear', 'reset']:
                     self.history.clear()
-                    print("✅ Chat history cleared")
+                    print("✅ Chat history cleared\n")
                     continue
                 
-                answer = self.ask(question)
-                print()
+                # Detect casual conversation
+                is_casual = any(re.search(pattern, question.lower()) for pattern in casual_patterns)
+                
+                if is_casual:
+                    # Respond casually without searching documents
+                    casual_responses = {
+                        'hi': "Hello! How can I help you today? Ask me anything about your documents!",
+                        'hello': "Hi there! What would you like to know?",
+                        'hey': "Hey! What can I help you with?",
+                        'bonjour': "Bonjour! Comment puis-je vous aider?",
+                        'thanks': "You're welcome! Happy to help! 😊",
+                        'thank you': "My pleasure! Let me know if you need anything else!",
+                        'merci': "De rien! N'hésitez pas si vous avez d'autres questions!",
+                        'bye': "Goodbye! Your knowledge base is always here when you need it!",
+                        'goodbye': "See you later! Feel free to come back anytime!",
+                        'ok': "Great! What else would you like to know?",
+                        'nice': "Thank you! I'm here to help! 😊",
+                        'cool': "Glad you like it! What else can I help with?",
+                        'good': "Excellent! Anything else you'd like to know?",
+                    }
+                    
+                    # Find matching response
+                    response = None
+                    for key, resp in casual_responses.items():
+                        if key in question.lower():
+                            response = resp
+                            break
+                    
+                    if not response:
+                        response = "I'm here to help! Ask me anything about your documents, or just chat!"
+                    
+                    print(f"\n{response}\n")
+                    continue
+                
+                # Detect general knowledge request
+                use_general_knowledge = any(re.search(pattern, question.lower()) for pattern in general_knowledge_patterns)
+                
+                if use_general_knowledge:
+                    # Clean the question (remove the "from your knowledge" part)
+                    clean_question = question
+                    for pattern in general_knowledge_patterns:
+                        clean_question = re.sub(pattern, '', clean_question, flags=re.IGNORECASE)
+                    clean_question = clean_question.strip(' ,-')
+                    
+                    if not clean_question:
+                        clean_question = question
+                    
+                    print()
+                    answer = self.ask(clean_question, use_documents=False)
+                    print()
+                else:
+                    # Normal document-based question
+                    print()
+                    answer = self.ask(question, use_documents=True)
+                    print()
                 
                 # Save to history
                 self.history.append({
@@ -589,8 +675,11 @@ Answer (be specific and helpful):"""
                 })
                 
             except KeyboardInterrupt:
-                print("\n\n👋 Goodbye!")
+                print("\n\n👋 Leaving chat mode...")
                 break
+            except Exception as e:
+                print(f"\n❌ Oops! Something went wrong: {e}")
+                print("💡 Try asking in a different way, or type 'exit' to leave chat mode\n")
 
 # ---------- SIMPLE MENU ----------
 def main():
