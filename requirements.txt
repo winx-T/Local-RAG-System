@@ -1,4 +1,16 @@
+# Core dependencies
 chromadb
-PyPDF2
 sentence-transformers
 requests
+numpy
+tqdm
+PyPDF2
+
+# Optional document format support
+python-docx
+python-pptx
+openpyxl
+beautifulsoup4
+
+# Utilities
+regex
