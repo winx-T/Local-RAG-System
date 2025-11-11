@@ -6,17 +6,6 @@ Built for **everyone**:
 - 🧩 Beginners who just want a simple, working personal AI.
 - 🧠 Power users who want reranking, hybrid search, and multilingual embeddings.
 
-##  What’s New in this version
-| Feature                        | Description                                                               |
-| ------------------------------ | ------------------------------------------------------------------------- |
-| 💡 **General Knowledge Mode**  | Ask questions without documents (“from your knowledge”).                  |
-| 💬 **Smarter Chat System**     | Handles casual talk, document Q&A, or general queries automatically.      |
-| 🧠 **Intent Detection**        | Detects whether to use documents or general knowledge via regex patterns. |
-| 🧰 **Improved Cache Handling** | Displays “from memory” responses for cached answers.                      |
-| 🛡️ **Error Resilience**       | Handles runtime issues gracefully without crashes.                        |
-| ✨ **Enhanced UX**              | Clearer chat messages, emojis, and helpful prompts.                       |
-
-
 ---
 
 ## 🔍 What is RAG?
@@ -46,99 +35,6 @@ Instead of relying only on what a model “knows” from training, RAG allows th
 - Works with **your own data**, not just what’s in the model’s memory.  
 - No retraining needed — just add documents and start asking!  
 - In your local version, everything happens **offline** and **privately**.
-
----
-
-## 🚀 Highlights
-
-| Feature | Description |
-|----------|--------------|
-| ⚙️ **Zero Configuration** | Works out of the box – just run the script |
-| 🧭 **Setup Wizard** | Friendly first-run setup: language, speed, and quality |
-| 💬 **Plain English Interface** | No technical jargon – “documents,” not “embeddings” |
-| 🧠 **Smart Chunking** | Sentence-aware text splitting with overlap |
-| 🎯 **Cross-Encoder Re-ranking** | High-accuracy context selection using `ms-marco-MiniLM-L-6-v2` |
-| 🔍 **Semantic Search** | Embeddings via `sentence-transformers` |
-| 🕰️ **Conversation Memory** | Keeps track of your recent Q&A exchanges |
-| 💾 **Persistent Knowledge Base** | Stores your documents locally using **ChromaDB** |
-| 🛡️ **100% Local Privacy** | All processing stays on your machine – no cloud calls |
-| 🌍 **Multilingual Support** | English, French, Arabic, Spanish, and more |
-
----
-
-## 🧩 Core Components
-
-### 🧭 1️⃣ First-Time Setup Wizard
-On first run, you’ll be guided through:
-1. Checking if Ollama is running  
-2. Choosing your language (English, French, Arabic, etc.)  
-3. Selecting **speed** or **best quality** mode  
-
-Your preferences are saved automatically for future sessions.
-
----
-
-### 📄 2️⃣ Smart Document Reader
-Automatically extracts text from:
-- PDF (.pdf)
-- Word (.docx, .doc)
-- Excel (.xlsx, .xls)
-- PowerPoint (.pptx, .ppt)
-- Text & Markdown (.txt, .md)
-- CSV (.csv)
-- HTML (.html, .htm)
-
-🧠 It also:
-- Auto-detects formats  
-- Skips unreadable files gracefully  
-- Uses multiple encodings for compatibility  
-
----
-
-### ✂️ 3️⃣ Intelligent Chunking
-Splits text into **~600-character segments** with a **20-word overlap**  
-→ Ensures smooth transitions between chunks and preserves sentence meaning.
-
----
-
-### 📚 4️⃣ Local Knowledge Base
-Documents are:
-- Embedded using **SentenceTransformers**
-- Stored persistently with **ChromaDB**
-- Tagged with metadata (source, size, timestamp)
-
----
-
-### 🔎 5️⃣ Semantic + Reranked Search
-1. Embeds your question into vector space  
-2. Retrieves top 20 relevant sections  
-3. (Optional) Reranks them using **CrossEncoder**  
-4. Assembles the top chunks as context for the LLM
-
-💡 Results are cached for 24 hours to speed up repeated queries.
-
----
-
-### 💬 6️⃣ Chat Mode
-Interactive chat with your documents:
-
-````bash
-You: What is cloud computing?
-🔍 Searching your documents...
-💭 Thinking...
-
-📝 ANSWER:
-Cloud computing is a model for delivering computing services over the internet...
-
-💡 Sources: cloud_intro.pdf
-`````
-
-🧰 Commands:
-
-* `docs` → show your document list
-* `clear` → reset chat memory
-* `exit` → quit chat mode
-
 ---
 
 ## ⚙️ Installation
@@ -150,14 +46,6 @@ Cloud computing is a model for delivering computing services over the internet..
   👉 [Download here](https://ollama.ai/download)
 
 ---
-
-### 📦 Install Dependencies
-
-```bash
-pip install chromadb sentence-transformers requests numpy tqdm PyPDF2
-# Optional (for extra formats)
-pip install python-docx python-pptx openpyxl beautifulsoup4
-```
 
 ### 🚀 Installation
 
@@ -180,80 +68,14 @@ pip install python-docx python-pptx openpyxl beautifulsoup4
 ```bash
 python rag_ollama.py
 ```
-
-**First run** → setup wizard (language + model preferences)
-**Next runs** → jump straight into chat or add new docs
-
----
-
-## 🏠 Main Menu
-
-```
-🏠 MAIN MENU
-1. 💬 Chat with your documents
-2. ➕ Add documents
-3. 📁 Add entire folder
-4. 📚 View my documents
-5. 🗑️ Remove a document
-6. ⚙️ Settings
-7. ❓ Help
-8. 🚪 Exit
-```
-
----
-
-## ⚙️ Settings Menu
-
-| Option         | Description                                |
-| -------------- | ------------------------------------------ |
-| Show sources   | Toggle document sources in answers         |
-| Stream answers | Stream text as it’s generated              |
-| Language       | Change preferred language                  |
-| Quality mode   | Switch between faster or best-quality mode |
-| Ollama model   | Set LLM (e.g., `llama3.2:3b`)              |
-
----
-
-## 🧠 Example Workflow
-
-```bash
-python rag_ollama.py
-```
-
-```
-👉 Choose (1-8): 2
-📂 Add your documents
-
-👉 Choose (1-8): 1
-You: What is machine learning?
-
-================================================================================
-📝 ANSWER:
-Machine learning is a subset of AI that enables systems to learn from data...
-================================================================================
-
-💡 Sources: ai_intro.pdf
-```
 ---
 
 ## 🔐 Privacy & Local Processing
 
 ✅ 100% Local – No cloud uploads
 ✅ No API keys required
-✅ All data stored under `./my_knowledge_base`
+✅ All data stored localy
 ✅ Safe for confidential or private use
-
----
-
-## 🧰 Troubleshooting
-
-| Problem              | Solution                                    |
-| -------------------- | ------------------------------------------- |
-| ❌ Ollama not found   | Run `ollama serve`                          |
-| ⚠️ Slow response     | Disable reranking (Settings → Quality Mode) |
-| 💾 High memory usage | Reduce chunk size or disable reranking      |
-| 📁 No answers        | Add more relevant documents                 |
-| 🔌 Connection error  | Ensure Ollama is running locally            |
 
 ---
 
