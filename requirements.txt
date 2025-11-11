@@ -1,4 +1,3 @@
-# Core dependencies
 chromadb
 sentence-transformers
 requests
@@ -12,5 +11,9 @@ python-pptx
 openpyxl
 beautifulsoup4
 
-# Utilities
-regex
+# Cross-encoder reranking model
+transformers
+torch
+
+# Optional utility
+typing-extensions
