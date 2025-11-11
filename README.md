@@ -225,22 +225,15 @@ python rag_ollama.py
 📂 Add your documents
 
 👉 Choose (1-8): 1
-💬 Ask: What is machine learning?
+You: What is machine learning?
 
-🧠 ANSWER:
+================================================================================
+📝 ANSWER:
 Machine learning is a subset of AI that enables systems to learn from data...
+================================================================================
+
 💡 Sources: ai_intro.pdf
 ```
-
----
-
-## 📊 Performance Comparison
-
-| Mode    | Description    | Retrieval Accuracy | Speed                             |
-| ------- | -------------- | ------------------ | --------------------------------- |
-| ⚡ Fast  | No reranking   | 70%                | Very fast                         |
-| 🎯 Best | With reranking | 87%                | Slightly slower but more accurate |
-
 ---
 
 ## 🔐 Privacy & Local Processing
@@ -261,16 +254,6 @@ Machine learning is a subset of AI that enables systems to learn from data...
 | 💾 High memory usage | Reduce chunk size or disable reranking      |
 | 📁 No answers        | Add more relevant documents                 |
 | 🔌 Connection error  | Ensure Ollama is running locally            |
-
----
-
-## 🚀 Future Roadmap
-
-* [ ] Web-based UI
-* [ ] Multi-modal retrieval (images, tables)
-* [ ] Document comparison & citation linking
-* [ ] Graph-based search
-* [ ] Fine-tuning assistant behavior
 
 ---
 
