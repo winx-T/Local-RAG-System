@@ -24,7 +24,13 @@ Built for **everyone**:
 **Retrieval-Augmented Generation (RAG)** is an AI technique that combines *information retrieval* with *text generation*.  
 Instead of relying only on what a model “knows” from training, RAG allows the system to **search your documents** in real time and use that knowledge to produce accurate, grounded answers.
 
-![RAG Diagram](https://developer-blogs.nvidia.com/wp-content/uploads/2023/12/rag-pipeline-ingest-query-flow-b.png)
+<p align="center">
+  <img 
+    src="https://cdn.prod.website-files.com/651c34ac817aad4a2e62ec1b/655664de69b30a6d00f0960c_gaJkRvUmWHsWtnAGlNtjQJYhSzHvUwZHvV7nDU3kQJ6EyEI1C4v6HRysXIw28UlXK3QT4yU0rgTD7v1cUgbl5nB71emE5vqz9Y0VlvLjg10BgaLcOvI4Zauu9AKU6EKWN5rIwIKPs8CSYd0CiX2Gg5g.png" 
+    alt="🧠 Local RAG System Banner"
+    style="max-width: 90%; height: auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);"
+  >
+</p>
 
 ### 🧠 How RAG Works
 
